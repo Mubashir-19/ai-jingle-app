@@ -281,11 +281,9 @@ export default function Home() {
             {pricingPlans.map((plan, idx) => (
               <Card 
                 key={idx} 
-                className={`flex flex-col bg-card/50 backdrop-blur-sm ${plan.popular ? 'border-primary shadow-xl ring-2 ring-primary' : 'border-border'}
-                            ${pricingPlans.length === 5 && idx >= 3 ? 'lg:col-span-1 sm:col-span-1' : ''} 
-                            ${pricingPlans.length === 5 && idx === 3 ? 'lg:col-start-1 lg:justify-self-end xl:col-start-2 xl:justify-self-auto' : ''}
-                            ${pricingPlans.length === 5 && idx === 4 ? 'lg:col-start-auto lg:justify-self-start xl:col-start-auto xl:justify-self-auto' : ''}
-                          `}
+                className={`flex flex-col bg-card/50 backdrop-blur-sm border 
+                  ${plan.popular ? 'border-primary shadow-xl ring-2 ring-primary' : 'border-border'}`}
+                
               >
                 <CardHeader className="pb-4">
                   <CardTitle className={`text-2xl font-semibold ${plan.popular ? 'text-primary' : 'text-foreground'}`}>{plan.name}</CardTitle>

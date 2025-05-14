@@ -80,11 +80,10 @@ export default function Home() {
 
         audio.addEventListener('timeupdate', updateTimes);
         audio.addEventListener('loadedmetadata', setDuration);
-        audio.addEventListener('durationchange', setDuration); // Catches changes if metadata not fully loaded
+        audio.addEventListener('durationchange', setDuration); 
         audio.addEventListener('ended', handleEnded);
         
-        // Initial set for duration if already loaded
-        if (audio.readyState >= 1 && isFinite(audio.duration)) { // HAVE_METADATA or more
+        if (audio.readyState >= 1 && isFinite(audio.duration)) { 
             setDuration();
         }
 
@@ -97,14 +96,13 @@ export default function Home() {
       }
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioRefs]);
+  }, []);
 
 
   const handlePlay = (id: string) => {
     Object.entries(audioRefs).forEach(([key, ref]) => {
       if (key !== id && ref.current) {
         ref.current.pause();
-        // ref.current.currentTime = 0; // Optional: reset other audios
         setIsPlaying(prev => ({ ...prev, [key]: false }));
       }
     });
@@ -162,21 +160,21 @@ export default function Home() {
       name: "Free Account",
       productions: "3 productions per month",
       price: "Free",
-      features: ["Basic jingle generation", "Limited sound effects"],
+      features: ["Basic jingle generation", "Limited sound effects", "Access to standard voices"],
       cta: "Get Started",
     },
     {
       name: "Starter Plan",
       productions: "10 productions per month",
       price: "$9/mo",
-      features: ["All Free features", "More sound effects", "Standard voices"],
+      features: ["All Free features", "More sound effects", "Enhanced voices"],
       cta: "Choose Plan",
     },
     {
       name: "Power Plan",
       productions: "30 productions per month",
       price: "$29/mo",
-      features: ["All Starter features", "Premium voices", "Priority support"],
+      features: ["All Starter features", "Premium voices", "AI Script Helper", "Priority support"],
       cta: "Choose Plan",
       popular: true,
     },
@@ -184,14 +182,14 @@ export default function Home() {
       name: "Pro Plan",
       productions: "60 productions per month",
       price: "$59/mo",
-      features: ["All Power features", "Commercial rights", "Advanced editor"],
+      features: ["All Power features", "Commercial rights", "Advanced editor tools"],
       cta: "Choose Plan",
     },
     {
       name: "Giga Plan",
       productions: "120 productions per month",
       price: "$99/mo",
-      features: ["All Pro features", "Team access", "Custom integrations"],
+      features: ["All Pro features", "Team access (up to 3 users)", "Custom integrations"],
       cta: "Choose Plan",
     },
   ];
@@ -279,9 +277,16 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
             Choose Your Plan
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch justify-center">
             {pricingPlans.map((plan, idx) => (
-              <Card key={idx} className={`flex flex-col bg-card/50 backdrop-blur-sm ${plan.popular ? 'border-primary shadow-xl ring-2 ring-primary' : 'border-border'} ${pricingPlans.length === 5 && (idx === 0 || idx === 4) ? 'lg:col-span-1 md:col-span-1' : ''} ${pricingPlans.length === 5 && (idx === 1 || idx === 2 || idx ===3) ? 'lg:col-span-1' : ''} ${(pricingPlans.length === 5 && (idx === 0)) ? 'lg:justify-self-end' : ''} ${(pricingPlans.length === 5 && (idx === 4)) ? 'lg:justify-self-start' : ''}`}>
+              <Card 
+                key={idx} 
+                className={`flex flex-col bg-card/50 backdrop-blur-sm ${plan.popular ? 'border-primary shadow-xl ring-2 ring-primary' : 'border-border'}
+                            ${pricingPlans.length === 5 && idx >= 3 ? 'lg:col-span-1 sm:col-span-1' : ''} 
+                            ${pricingPlans.length === 5 && idx === 3 ? 'lg:col-start-1 lg:justify-self-end xl:col-start-2 xl:justify-self-auto' : ''}
+                            ${pricingPlans.length === 5 && idx === 4 ? 'lg:col-start-auto lg:justify-self-start xl:col-start-auto xl:justify-self-auto' : ''}
+                          `}
+              >
                 <CardHeader className="pb-4">
                   <CardTitle className={`text-2xl font-semibold ${plan.popular ? 'text-primary' : 'text-foreground'}`}>{plan.name}</CardTitle>
                   <CardDescription className="text-muted-foreground">{plan.productions}</CardDescription>
@@ -305,62 +310,6 @@ export default function Home() {
               </Card>
             ))}
           </div>
-           {/* Centering logic for 5 cards: a bit complex with pure Tailwind grid, might need adjustments or simpler layout if this becomes too unwieldy.
-               This current grid setup aims for 2 columns on md, 3 on lg.
-               For 5 items on lg:
-               - First item pushes to end of its 'cell' in a 3-col grid idea
-               - Last item pushes to start of its 'cell'
-               - Middle 3 items fill naturally.
-               Consider adjusting lg:grid-cols-X based on how many cards are "featured" or need specific placement.
-               If 5 items, typical responsive grids might show 2 then 3, or 3 then 2. Or a custom setup like:
-               lg:grid-cols-5 then each card is lg:col-span-1
-               OR lg:grid-cols-6 with offsets: first item lg:col-start-2 lg:col-span-1 etc. for perfect centering.
-               The current approach using justify-self on first/last for lg might work if the grid auto-flows well.
-            */}
-            {pricingPlans.length === 5 && (
-              <style jsx>{`
-                @media (min-width: 1024px) { /* lg breakpoint */
-                  .grid > :nth-child(1) { grid-column: 2 / span 1; }
-                  .grid > :nth-child(2) { grid-column: 3 / span 1; }
-                  .grid > :nth-child(3) { grid-column: 4 / span 1; }
-                  /* If you want 2 items on the second row for 5 items total */
-                  .grid > :nth-child(4) { grid-column: 2 / span 1; margin-left: auto; margin-right: auto; width: calc(100% / 3 * 2 + 1rem); max-width: calc(50% - 0.5rem); } /* Adjust width and margin for centering */
-                  .grid > :nth-child(5) { grid-column: 4 / span 1; margin-left: auto; margin-right: auto; width: calc(100% / 3 * 2 + 1rem); max-width: calc(50% - 0.5rem); }
-
-                   /* A simpler approach for 5 items on LG: 2 top, 3 bottom or 3 top, 2 bottom */
-                  .grid {
-                    grid-template-columns: repeat(auto-fit, minmax(min(100%/2, max(280px, 100%/3)), 1fr));
-                  }
-                   /* Centering the 5-card layout on large screens */
-                  .lg\\:grid-cols-3 > *:nth-child(1):nth-last-child(5),
-                  .lg\\:grid-cols-3 > *:nth-child(2):nth-last-child(4) {
-                     /* These selectors target the first two items when there are exactly 5 items */
-                     /* You might need a wrapper or more specific targeting if it's not exactly 3 columns */
-                  }
-                   /* For 5 cards, making the grid behave like 2 on top, 3 on bottom on large screens could be: */
-                  .lg\\:grid-cols-3 > *:nth-child(1):nth-last-child(5) { /* First of 5 */
-                     grid-column: 1 / span 1;
-                     justify-self: end; /* Pushes to the right in its column */
-                     margin-right: 1rem; /* Adjust spacing */
-                   }
-                   .lg\\:grid-cols-3 > *:nth-child(2):nth-last-child(4) { /* Second of 5 */
-                     grid-column: 2 / span 1;
-                     justify-self: start; /* Pushes to the left in its column */
-                     margin-left: 1rem; /* Adjust spacing */
-                   }
-                   /* The other 3 will flow naturally. This assumes a 3-column grid. */
-                   /* A more robust way for 5 items might be a 10 or 12 column grid for finer control */
-                   /* Example for a 6-column base for centering 5 items: */
-                   /*
-                   .lg\\:grid-cols-6 > *:nth-child(1) { grid-column: 2 / span 1; }
-                   .lg\\:grid-cols-6 > *:nth-child(2) { grid-column: 3 / span 1; }
-                   .lg\\:grid-cols-6 > *:nth-child(3) { grid-column: 4 / span 1; }
-                   .lg\\:grid-cols-6 > *:nth-child(4) { grid-column: 2 / span 2; justify-self: end; margin-right: 1rem; }
-                   .lg\\:grid-cols-6 > *:nth-child(5) { grid-column: 4 / span 2; justify-self: start; margin-left: 1rem; }
-                   */
-                }
-              `}</style>
-            )}
         </div>
       </section>
 
@@ -530,4 +479,3 @@ export default function Home() {
     </div>
   );
 }
-

@@ -10,36 +10,35 @@ export default function LoginPage() {
       <Card className="w-full max-w-md bg-card/80 backdrop-blur-md">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-            Welcome Back!
+            Access JingleBox
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Sign in to access your JingleBox dashboard.
+            Sign in or create an account to continue.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 p-6">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="you@example.com" required />
+            <Label htmlFor="email">Email (handled by Auth0)</Label>
+            <Input id="email" type="email" placeholder="you@example.com" disabled />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Link href="#" className="text-sm text-primary/80 hover:text-primary hover:underline">
+              <Label htmlFor="password">Password (handled by Auth0)</Label>
+              <Link href="/api/auth/login" className="text-sm text-primary/80 hover:text-primary hover:underline">
                 Forgot password?
               </Link>
             </div>
-            <Input id="password" type="password" placeholder="••••••••" required />
+            <Input id="password" type="password" placeholder="••••••••" disabled />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4 p-6">
-          <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition-opacity text-primary-foreground">
-            Sign In
+          <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition-opacity text-primary-foreground" asChild>
+            <Link href="/api/auth/login">
+              Sign In / Sign Up
+            </Link>
           </Button>
           <p className="text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="#" className="font-semibold text-primary/80 hover:text-primary hover:underline">
-              Sign up
-            </Link>
+            Login and account management are handled by Auth0.
           </p>
         </CardFooter>
       </Card>

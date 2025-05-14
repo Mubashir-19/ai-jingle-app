@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, LogIn } from 'lucide-react';
+import { Menu, X, LogIn, Tags } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { LogoIcon } from '@/components/icons/logo-icon';
@@ -20,6 +21,7 @@ export function Navbar() {
   }, []);
 
   const navItems = [
+    { href: '/#pricing', label: 'Pricing', icon: <Tags className="h-4 w-4" /> },
     { href: '/login', label: 'Login', icon: <LogIn className="h-4 w-4" /> },
   ];
 
@@ -38,6 +40,11 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-2">
+            <Button variant="ghost" asChild>
+              <Link href="/#pricing">
+                <Tags className="mr-2 h-4 w-4" /> Pricing
+              </Link>
+            </Button>
             <Button variant="ghost" asChild>
               <Link href="/login">
                 <LogIn className="mr-2 h-4 w-4" /> Login
@@ -66,7 +73,7 @@ export function Navbar() {
                 </div>
                 <nav className="flex flex-col space-y-3">
                   {navItems.map((item) => (
-                    <SheetClose asChild key={item.href}>
+                    <SheetClose asChild key={item.label}>
                       <Link
                         href={item.href}
                         className="flex items-center rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
@@ -85,3 +92,4 @@ export function Navbar() {
     </header>
   );
 }
+
